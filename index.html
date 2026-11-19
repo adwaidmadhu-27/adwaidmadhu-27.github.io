@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Adwaid Madhu</title>
+<meta name="description" content="Adwaid Madhu, software engineer and final-year B.Tech CSE (Data Science) student at SRM IST. Smart India Hackathon 2026 Grand Finalist. AWS Certified Solutions Architect – Associate.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* Layout idea: a route map. The hero is a live grid where a vehicle re-plans around hazards it finds in fog (MineSight); the page reads as a left label rail plus content. Orange always means "hazard / attention". */
+  --bg: #F2F3F6;
+  --surface: #FFFFFF;
+  --ink: #14161C;
+  --muted: #5A6070;
+  --line: #D8DBE3;
+  --accent: #2440C9;
+  --flag: #C2410C;
+  --flag-soft: rgba(194, 65, 12, 0.10);
+  --accent-soft: rgba(36, 64, 201, 0.08);
+  --display: "Instrument Serif", "Iowan Old Style", Georgia, serif;
+  --body: "Geist", "Segoe UI", system-ui, sans-serif;
+  --mono: "Geist Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --rail: 220px;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0E1015; --surface: #161922; --ink: #E8EAF0; --muted: #969CAD;
+    --line: #2A2E3A; --accent: #8496FF; --flag: #FF8A4C;
+    --flag-soft: rgba(255, 138, 76, 0.12); --accent-soft: rgba(132, 150, 255, 0.10);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0E1015; --surface: #161922; --ink: #E8EAF0; --muted: #969CAD;
+  --line: #2A2E3A; --accent: #8496FF; --flag: #FF8A4C;
+  --flag-soft: rgba(255, 138, 76, 0.12); --accent-soft: rgba(132, 150, 255, 0.10);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font-family: var(--body); font-size: 17px; line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+.wrap { max-width: 1100px; margin: 0 auto; padding: 0 clamp(18px, 4vw, 40px); }
+.mono { font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.02em; }
+.label { font-family: var(--mono); font-size: 0.8rem; color: var(--muted); letter-spacing: 0.02em; }
+.label b { color: var(--accent); font-weight: 500; margin-right: 10px; }
+h1, h2, h3 { text-wrap: balance; margin: 0; font-weight: 400; }
+p { margin: 0; }
+
+/* Top bar */
+.top { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 22px 0; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+.top .name { font-family: var(--mono); font-size: 0.85rem; color: var(--ink); text-decoration: none; display: flex; align-items: center; gap: 10px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); display: inline-block; box-shadow: 0 0 0 4px var(--accent-soft); }
+.top nav { display: flex; gap: 22px; flex-wrap: wrap; }
+.top nav a { font-family: var(--mono); font-size: 0.8rem; color: var(--muted); text-decoration: none; }
+.top nav a:hover { color: var(--ink); }
+
+/* Rows: left rail + content */
+.row { display: grid; grid-template-columns: var(--rail) 1fr; gap: 12px 32px; }
+
+/* Hero */
+.hero { padding: clamp(44px, 7vw, 88px) 0 clamp(36px, 5vw, 56px); display: grid; gap: 30px; }
+.rail-top { display: grid; gap: 18px; align-content: start; }
+.avatar { width: 132px; height: 132px; border-radius: 50%; object-fit: cover; display: block; border: 1px solid var(--line); background: var(--surface); }
+@media (max-width: 880px) { .rail-top { grid-template-columns: auto 1fr; align-items: center; } .avatar { width: 84px; height: 84px; } }
+.hero h1 { font-family: var(--display); font-size: clamp(3.2rem, 8.5vw, 6.6rem); line-height: 0.95; letter-spacing: -0.015em; }
+.hero h1 em { font-style: italic; color: var(--accent); }
+.hero .lede { font-family: var(--display); font-size: clamp(1.55rem, 3.2vw, 2.35rem); line-height: 1.2; max-width: 28ch; margin-top: 22px; }
+.hero .lede .hz { color: var(--flag); font-style: italic; }
+.facts { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+.chip { font-family: var(--mono); font-size: 0.75rem; border: 1px solid var(--line); background: var(--surface); padding: 6px 11px; border-radius: 999px; color: var(--ink); }
+.chip.hot { border-color: var(--flag); color: var(--flag); background: var(--flag-soft); }
+.chip.aws { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+.cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+.btn { font-family: var(--mono); font-size: 0.82rem; text-decoration: none; padding: 10px 16px; border-radius: 6px; border: 1px solid var(--ink); color: var(--ink); }
+.btn.primary { background: var(--ink); color: var(--bg); }
+.btn:hover { border-color: var(--accent); }
+.btn.primary:hover { background: var(--accent); border-color: var(--accent); }
+
+.mapbox { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.mapbar { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 10px 14px; border-bottom: 1px solid var(--line); color: var(--muted); }
+.mapbar .status { color: var(--accent); font-variant-numeric: tabular-nums; }
+.mapbar .status.alert { color: var(--flag); }
+canvas.map { display: block; width: 100%; height: 250px; }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 20px; padding: 10px 14px; border-top: 1px solid var(--line); color: var(--muted); }
+.legend i { display: inline-block; width: 10px; height: 10px; margin-right: 7px; vertical-align: -1px; border-radius: 2px; }
+.note { color: var(--muted); font-size: 0.82rem; margin-top: 10px; }
+
+/* Sections */
+section { padding: clamp(48px, 7vw, 84px) 0; border-top: 1px solid var(--line); }
+.sec-title { font-family: var(--display); font-size: clamp(2rem, 4.5vw, 3.1rem); line-height: 1.05; margin-bottom: 36px; }
+
+/* Featured */
+.feature h3 { font-family: var(--display); font-size: clamp(1.8rem, 3.4vw, 2.5rem); line-height: 1.1; }
+.feature .sub { color: var(--muted); margin-top: 8px; }
+.feature-body { display: grid; grid-template-columns: 1.1fr 1fr; gap: 36px; margin-top: 22px; align-items: start; }
+.bullets { display: grid; gap: 14px; padding: 0; margin: 0; list-style: none; }
+.bullets li { padding-left: 18px; position: relative; max-width: 62ch; }
+.bullets li::before { content: ""; position: absolute; left: 0; top: 0.72em; width: 7px; height: 1px; background: var(--muted); }
+.pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.pill { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); border: 1px solid var(--line); padding: 3px 9px; border-radius: 4px; background: var(--surface); }
+
+.pipe { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px; display: grid; gap: 10px; }
+.pipe-h { color: var(--muted); margin-bottom: 4px; }
+.stage { display: grid; grid-template-columns: 26px 1fr; gap: 12px; align-items: start; }
+.stage .n { font-family: var(--mono); font-size: 0.72rem; color: var(--accent); padding-top: 3px; }
+.stage .what { font-weight: 500; }
+.stage .how { color: var(--muted); font-size: 0.88rem; line-height: 1.45; }
+.sensors { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
+.sensors span { font-family: var(--mono); font-size: 0.7rem; padding: 2px 7px; border-radius: 3px; background: var(--accent-soft); color: var(--accent); }
+.stage.hz .n { color: var(--flag); }
+.stage.hz .sensors span { background: var(--flag-soft); color: var(--flag); }
+.arrow { margin-left: 38px; height: 12px; border-left: 1px dashed var(--line); }
+
+/* Entries */
+.entries { display: grid; border-top: 1px solid var(--line); }
+.entry { display: grid; grid-template-columns: var(--rail) 1fr 200px; gap: 8px 32px; padding: 30px 0; border-bottom: 1px solid var(--line); align-items: baseline; }
+.entry h3 { font-family: var(--display); font-size: 1.7rem; line-height: 1.15; }
+.entry .org { color: var(--muted); margin: 4px 0 14px; }
+.entry .side { text-align: right; color: var(--muted); }
+.entry p.desc { max-width: 62ch; }
+
+/* Skills */
+.skills { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 28px 32px; }
+.skills h3 { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
+.skills ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 7px; }
+.skills li { padding-bottom: 7px; border-bottom: 1px dashed var(--line); }
+
+/* Education */
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 22px; display: grid; gap: 8px; align-content: start; }
+.card h3 { font-family: var(--display); font-size: 1.45rem; line-height: 1.15; }
+.card .mono { color: var(--muted); }
+.card .big { font-family: var(--display); font-size: 2.4rem; line-height: 1; color: var(--accent); font-variant-numeric: tabular-nums; }
+.card.cert { border-color: var(--accent); }
+.card.cert .mono { color: var(--accent); }
+
+/* Off the keyboard */
+.off { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+.off h3 { font-family: var(--display); font-size: 1.5rem; margin-bottom: 8px; }
+.langs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+
+/* Contact */
+.contact h2 { font-family: var(--display); font-size: clamp(2.2rem, 5.5vw, 4rem); line-height: 1.02; max-width: 15ch; margin-bottom: 26px; }
+.links { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+.link { display: grid; gap: 4px; padding: 16px 18px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink); text-decoration: none; min-width: 0; }
+.link span:first-child { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+.link span:last-child { overflow-wrap: anywhere; }
+.link:hover { border-color: var(--accent); }
+.link:hover span:last-child { color: var(--accent); }
+footer { padding: 28px 0 40px; border-top: 1px solid var(--line); color: var(--muted); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+
+@media (max-width: 880px) {
+  .row, .entry { grid-template-columns: 1fr; gap: 10px; }
+  .feature-body, .off { grid-template-columns: 1fr; }
+  .entry .side { text-align: left; }
+  canvas.map { height: 220px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="name" href="#top"><span class="dot" aria-hidden="true"></span>adwaid madhu</a>
+    <nav aria-label="Sections">
+      <a href="#work">Work</a>
+      <a href="#experience">Experience</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <div class="hero">
+      <div class="row">
+        <div class="rail-top"><img class="avatar" src="photo.jpg" alt="Adwaid Madhu" width="132" height="132"><div class="label"><b>00</b>Software engineer</div></div>
+        <div>
+          <h1>Adwaid <em>Madhu</em></h1>
+          <p class="lede">I build software across the stack, from sensor-fusion pipelines that spot <span class="hz">hazards in fog</span> to the React dashboards people watch them on.</p>
+          <div class="facts">
+            <span class="chip hot">Smart India Hackathon 2026 · Grand Finalist</span>
+            <span class="chip aws">AWS Certified Solutions Architect – Associate</span>
+            <span class="chip">B.Tech CSE (Data Science) · SRM IST · 2027</span>
+          </div>
+          <div class="cta">
+            <a class="btn primary" href="mailto:adwaidmadhumadhu@gmail.com">Email me</a>
+            <a class="btn" href="https://github.com/Adwaid-250">GitHub</a>
+            <a class="btn" href="https://www.linkedin.com/in/adwaid-madhu-518a6321a">LinkedIn</a>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="label" aria-hidden="true">live demo</div>
+        <div>
+          <div class="mapbox">
+            <div class="mapbar mono"><span>minesight · route planner</span><span class="status" id="status" aria-live="off">route clear</span></div>
+            <canvas class="map" id="map" role="img" aria-label="Animated grid map: a vehicle drives toward a goal, detects hazards hidden in fog within its sensor range, and re-plans its route around them."></canvas>
+            <div class="legend mono">
+              <span><i style="background:var(--accent)"></i>vehicle and planned route</span>
+              <span><i style="background:var(--line)"></i>known obstacle</span>
+              <span><i style="background:var(--flag)"></i>hazard found in fog</span>
+              <span><i style="border:1px dashed var(--muted)"></i>sensor range</span>
+            </div>
+          </div>
+          <p class="note">A simplified browser version of MineSight's idea: the vehicle only sees hazards inside its sensor range and re-plans the moment one blocks its path. Grid A* here; the real system uses D* Lite on weighted road segments.</p>
+        </div>
+      </div>
+    </div>
+
+    <section id="work">
+      <div class="row">
+        <div class="label">Selected work</div>
+        <h2 class="sec-title">Projects</h2>
+      </div>
+
+      <article class="row feature">
+        <div class="label"><b>01</b>2026 · Team of 6</div>
+        <div>
+          <h3>MineSight</h3>
+          <p class="sub">Hazard detection and route planning for mine vehicles in fog. Smart India Hackathon 2026 Grand Finalist. I led the algorithm pipeline.</p>
+          <div class="feature-body">
+            <div>
+              <ul class="bullets">
+                <li>Designed the algorithm pipeline: radar, thermal and ultrasonic data are fused, an AI model picks out people, vehicles, road edges and mud or water, and the output becomes a live hazard map around the vehicle.</li>
+                <li>Built hazard sharing between vehicles over V2V and mesh links, so a hazard one vehicle sees shows up on the maps of nearby vehicles.</li>
+                <li>Used D* Lite to re-plan routes when road segments get new weights for visibility, soil moisture and traffic. Updated routes and alerts go to the driver's in-cab screen.</li>
+                <li>Tested on an Ackermann-steering rover.</li>
+              </ul>
+              <div class="pills"><span class="pill">Python</span><span class="pill">PyTorch</span><span class="pill">ROS 2</span><span class="pill">D* Lite</span><span class="pill">Sensor fusion</span><span class="pill">V2V</span></div>
+            </div>
+            <div class="pipe" aria-label="MineSight pipeline">
+              <div class="pipe-h mono">pipeline</div>
+              <div class="stage"><span class="n">01</span><div><div class="what">Sense</div><div class="sensors"><span>radar</span><span>thermal</span><span>ultrasonic</span></div></div></div>
+              <div class="arrow"></div>
+              <div class="stage"><span class="n">02</span><div><div class="what">Fuse and detect</div><div class="how">AI model classifies people, vehicles, road edges, mud and water</div></div></div>
+              <div class="arrow"></div>
+              <div class="stage hz"><span class="n">03</span><div><div class="what">Live hazard map</div><div class="sensors"><span>shared over V2V + mesh</span></div></div></div>
+              <div class="arrow"></div>
+              <div class="stage"><span class="n">04</span><div><div class="what">Re-plan with D* Lite</div><div class="how">Segment weights: visibility, soil moisture, traffic</div></div></div>
+              <div class="arrow"></div>
+              <div class="stage"><span class="n">05</span><div><div class="what">In-cab screen</div><div class="how">Updated route and alerts for the driver</div></div></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <div class="entries" style="margin-top:56px">
+        <article class="entry">
+          <div class="label"><b>02</b>2025 · Team of 3</div>
+          <div>
+            <h3>QuantGreen</h3>
+            <p class="org">Carbon emission analysis and forecasting from bank transactions · Product manager</p>
+            <p class="desc">A mobile app that turns bank transactions, typed in or uploaded as a CSV statement, into CO₂ estimates using emission factors, and forecasts future emissions. I wrote the SRS, broke it into user stories, sprints and backlog items in JIRA, ran sprint planning and issue triage, and wrote the maintenance process model to IEEE 14764.</p>
+            <div class="pills"><span class="pill">Flutter</span><span class="pill">FastAPI</span><span class="pill">Firebase</span><span class="pill">Pandas</span><span class="pill">JIRA</span></div>
+          </div>
+          <div class="side mono">Software Engineering and Project Management course</div>
+        </article>
+
+        <article class="entry">
+          <div class="label"><b>03</b>2026 · Team of 2</div>
+          <div>
+            <h3>Captioning for technical lectures</h3>
+            <p class="org">With Aditya Mukharjee · Guided by Dr. Ramprasad M</p>
+            <p class="desc">Generates captions for lecture recordings with Distil-Whisper, flags likely misheard technical terms against a subject glossary, exports SRT files, and compares a baseline model with a fine-tuned one.</p>
+            <div class="pills"><span class="pill">Distil-Whisper</span><span class="pill">Speech recognition</span><span class="pill">Fine-tuning</span></div>
+          </div>
+          <div class="side mono">In progress</div>
+        </article>
+
+        <article class="entry">
+          <div class="label"><b>04</b>2026</div>
+          <div>
+            <h3>AI academic and career advisor</h3>
+            <p class="org">Frontend</p>
+            <p class="desc">Checks a student's profile against elective rules and prerequisites, then uses an LLM to suggest electives, career paths and skill gaps, with several paths to compare and a feedback loop.</p>
+            <div class="pills"><span class="pill">LLM</span><span class="pill">Recommendation</span><span class="pill">Frontend</span></div>
+          </div>
+          <div class="side mono">Team project</div>
+        </article>
+      </div>
+    </section>
+
+    <section id="experience">
+      <div class="row">
+        <div class="label">Experience</div>
+        <h2 class="sec-title">Research internship</h2>
+      </div>
+      <article class="row">
+        <div class="label"><b>Jun 2025</b>Chennai</div>
+        <div>
+          <h3 style="font-family:var(--display);font-size:1.7rem;line-height:1.15">Research Intern, CIMES</h3>
+          <p class="sub" style="color:var(--muted);margin:4px 0 16px">Centre for Intelligent Marine and Energy Systems, SRM IST · Intrusion detection and prevention for wireless mesh networks</p>
+          <ul class="bullets">
+            <li>Built ML models in Python to detect intrusions and unusual traffic in wireless mesh networks, handling data cleaning, feature selection and model training.</li>
+            <li>Applied quantum machine learning methods to improve detection.</li>
+            <li>Developed a real-time monitoring dashboard in React, Node.js, Express and MongoDB that shows detected threats.</li>
+            <li>Plotted attack patterns with matplotlib and seaborn and reviewed results with faculty mentors.</li>
+          </ul>
+          <div class="pills"><span class="pill">Python</span><span class="pill">Quantum ML</span><span class="pill">React</span><span class="pill">Node.js</span><span class="pill">Express</span><span class="pill">MongoDB</span></div>
+        </div>
+      </article>
+    </section>
+
+    <section id="skills">
+      <div class="row">
+        <div class="label">Skills</div>
+        <div class="skills">
+          <div><h3>Languages</h3><ul><li>Python</li><li>Java</li><li>C++</li><li>JavaScript</li><li>SQL</li></ul></div>
+          <div><h3>Web and backend</h3><ul><li>React</li><li>Node.js, Express</li><li>FastAPI</li><li>REST APIs</li><li>Flutter</li></ul></div>
+          <div><h3>Databases</h3><ul><li>MySQL</li><li>MongoDB</li><li>Firebase</li></ul></div>
+          <div><h3>ML and data</h3><ul><li>PyTorch</li><li>Pandas</li><li>Data cleaning, feature selection</li><li>Quantum machine learning</li><li>matplotlib, seaborn</li></ul></div>
+          <div><h3>Robotics and algorithms</h3><ul><li>ROS 2</li><li>D* Lite path planning</li><li>Sensor fusion</li><li>Data structures and algorithms</li><li>Object-oriented programming</li></ul></div>
+          <div><h3>Cloud and tools</h3><ul><li>AWS</li><li>Docker</li><li>Git, GitHub</li><li>JIRA</li></ul></div>
+          <div><h3>Practice</h3><ul><li>Agile (Scrum)</li><li>SDLC</li><li>Requirements, SRS</li><li>Technical documentation</li></ul></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="education">
+      <div class="row">
+        <div class="label">Education</div>
+        <div class="cards">
+          <div class="card">
+            <span class="mono">2023 – 2027</span>
+            <h3>B.Tech, CSE (Data Science)</h3>
+            <p>SRM Institute of Science and Technology, Kattankulathur, Chennai</p>
+            <div><span class="big">8.34</span> <span class="mono">/ 10 CGPA</span></div>
+          </div>
+          <div class="card cert">
+            <span class="mono">April 2026</span>
+            <h3>AWS Certified Solutions Architect – Associate</h3>
+            <p>Amazon Web Services</p>
+          </div>
+          <div class="card">
+            <span class="mono">2021 – 2023</span>
+            <h3>Higher Secondary (Class XII)</h3>
+            <p>Career Convent Higher Secondary School, Bhopal</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="row">
+        <div class="label">Off the keyboard</div>
+        <div class="off">
+          <div>
+            <h3>Stage</h3>
+            <p>Winner of the stage play at Jhalak'24, SRM IST, and a certificate of appreciation from the Movies and Dramatics Club (2023 – 2025).</p>
+          </div>
+          <div>
+            <h3>Five languages</h3>
+            <div class="langs"><span class="chip">English</span><span class="chip">Hindi</span><span class="chip">Malayalam</span><span class="chip">Tamil</span><span class="chip">Japanese</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="row contact">
+        <div class="label">Contact</div>
+        <div>
+          <h2>Looking for a software engineer role from 2027.</h2>
+          <div class="links">
+            <a class="link" href="mailto:adwaidmadhumadhu@gmail.com"><span>Email</span><span>adwaidmadhumadhu@gmail.com</span></a>
+            <a class="link" href="https://github.com/Adwaid-250"><span>GitHub</span><span>github.com/Adwaid-250</span></a>
+            <a class="link" href="https://www.linkedin.com/in/adwaid-madhu-518a6321a"><span>LinkedIn</span><span>linkedin.com/in/adwaid-madhu-518a6321a</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="mono">
+    <span>Adwaid Madhu · Chengalpattu, Tamil Nadu, India</span>
+    <span>route complete</span>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var canvas = document.getElementById('map');
+  var ctx = canvas.getContext('2d');
+  var statusEl = document.getElementById('status');
+  var CELL = 16, R = 4.5;
+  var S = null;
+
+  function rng(a) { return function () { a |= 0; a = a + 0x6D2B79F5 | 0; var t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  function css(n) { return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
+
+  function astar(cols, rows, blocked, start, goal) {
+    var n = cols * rows, g = new Float64Array(n).fill(Infinity), came = new Int32Array(n).fill(-1), closed = new Uint8Array(n);
+    var open = [start]; g[start] = 0;
+    var gx = goal % cols, gy = (goal / cols) | 0;
+    function h(i) { return Math.abs(i % cols - gx) + Math.abs(((i / cols) | 0) - gy); }
+    while (open.length) {
+      var bi = 0, bf = Infinity;
+      for (var k = 0; k < open.length; k++) { var f = g[open[k]] + h(open[k]) * 1.001; if (f < bf) { bf = f; bi = k; } }
+      var cur = open.splice(bi, 1)[0];
+      if (cur === goal) { var p = [cur]; while (came[cur] !== -1) { cur = came[cur]; p.push(cur); } return p.reverse(); }
+      closed[cur] = 1;
+      var x = cur % cols, y = (cur / cols) | 0;
+      var nb = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+      for (var d = 0; d < 4; d++) {
+        var nx = x + nb[d][0], ny = y + nb[d][1];
+        if (nx < 0 || ny < 0 || nx >= cols || ny >= rows) continue;
+        var ni = ny * cols + nx;
+        if (blocked[ni] || closed[ni]) continue;
+        var ng = g[cur] + 1;
+        if (ng < g[ni]) { g[ni] = ng; came[ni] = cur; if (open.indexOf(ni) < 0) open.push(ni); }
+      }
+    }
+    return null;
+  }
+
+  function setup(seed) {
+    var w = canvas.clientWidth, h = canvas.clientHeight;
+    var cols = Math.max(12, Math.floor(w / CELL)), rows = Math.max(8, Math.floor(h / CELL));
+    for (var tries = 0; tries < 30; tries++, seed++) {
+      var r = rng(seed), n = cols * rows, rock = new Uint8Array(n);
+      for (var i = 0; i < n; i++) rock[i] = r() < 0.17 ? 1 : 0;
+      var start = (rows - 2) * cols + 1, goal = 1 * cols + (cols - 2);
+      [start, goal].forEach(function (c) { var cx = c % cols, cy = (c / cols) | 0; for (var dy = -1; dy <= 1; dy++) for (var dx = -1; dx <= 1; dx++) { var x = cx + dx, y = cy + dy; if (x >= 0 && y >= 0 && x < cols && y < rows) rock[y * cols + x] = 0; } });
+      var path = astar(cols, rows, rock, start, goal);
+      if (!path || path.length < 10) continue;
+      var hidden = new Uint8Array(n);
+      [0.28, 0.5, 0.72].forEach(function (fr) {
+        var c = path[Math.floor(path.length * fr)], cx = c % cols, cy = (c / cols) | 0;
+        for (var k = 0; k < 5; k++) {
+          var x = cx + Math.round((r() - 0.5) * 2.4), y = cy + Math.round((r() - 0.5) * 2.4);
+          if (x < 0 || y < 0 || x >= cols || y >= rows) continue;
+          var j = y * cols + x; if (j !== start && j !== goal) hidden[j] = 1;
+        }
+        hidden[c] = 1;
+      });
+      var known = new Uint8Array(rock);
+      var trial = new Uint8Array(n); for (var q = 0; q < n; q++) trial[q] = rock[q] | hidden[q];
+      if (!astar(cols, rows, trial, start, goal)) continue;
+      return { seed: seed, cols: cols, rows: rows, rock: rock, hidden: hidden, found: new Uint8Array(n), known: known, start: start, goal: goal, pos: start, path: path, step: 0, trail: [start], replans: 0, flash: 0, done: 0 };
+    }
+    return null;
+  }
+
+  function sense() {
+    var c = S.cols, px = S.pos % c, py = (S.pos / c) | 0, hit = false;
+    for (var i = 0; i < S.hidden.length; i++) {
+      if (!S.hidden[i] || S.found[i]) continue;
+      var dx = i % c - px, dy = ((i / c) | 0) - py;
+      if (dx * dx + dy * dy <= R * R) { S.found[i] = 1; S.known[i] = 1; hit = true; }
+    }
+    if (hit) {
+      var rest = S.path.slice(S.step);
+      if (rest.some(function (j) { return S.known[j]; })) {
+        var np = astar(S.cols, S.rows, S.known, S.pos, S.goal);
+        if (np) { S.path = np; S.step = 0; S.replans++; S.flash = 1; setStatus(true); }
+      }
+    }
+  }
+
+  function setStatus(alert) {
+    statusEl.textContent = alert ? 'hazard detected · re-planned (' + S.replans + ')' : (S.replans ? 'route updated (' + S.replans + ' re-plans)' : 'route clear');
+    statusEl.classList.toggle('alert', !!alert);
+  }
+
+  function tick() {
+    if (S.pos === S.goal) { S.done++; if (S.done > 12) { S = setup(S.seed + 1) || S; setStatus(false); } return; }
+    sense();
+    if (S.step + 1 < S.path.length) { S.step++; S.pos = S.path[S.step]; S.trail.push(S.pos); }
+    if (S.flash) { S.flash -= 0.25; if (S.flash <= 0) { S.flash = 0; setStatus(false); } }
+  }
+
+  function draw() {
+    if (!S) return;
+    var dpr = window.devicePixelRatio || 1, w = canvas.clientWidth, h = canvas.clientHeight;
+    if (canvas.width !== Math.round(w * dpr) || canvas.height !== Math.round(h * dpr)) { canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr); }
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    var c = S.cols, cw = w / c, ch = h / S.rows;
+    var surf = css('--surface'), line = css('--line'), acc = css('--accent'), flag = css('--flag'), muted = css('--muted');
+    ctx.fillStyle = surf; ctx.fillRect(0, 0, w, h);
+    var px = S.pos % c, py = (S.pos / c) | 0;
+    function ctr(i) { return [(i % c + 0.5) * cw, (((i / c) | 0) + 0.5) * ch]; }
+
+    for (var i = 0; i < S.rock.length; i++) {
+      var x = i % c, y = (i / c) | 0;
+      var d = Math.sqrt((x - px) * (x - px) + (y - py) * (y - py));
+      var vis = d <= R ? 1 : 0.45;
+      if (S.rock[i]) { ctx.globalAlpha = 0.32 * vis; ctx.fillStyle = muted; ctx.fillRect(x * cw + 1, y * ch + 1, cw - 2, ch - 2); }
+      else { ctx.globalAlpha = 0.5 * vis; ctx.fillStyle = line; ctx.fillRect((x + 0.5) * cw - 0.75, (y + 0.5) * ch - 0.75, 1.5, 1.5); }
+      if (S.found[i]) { ctx.globalAlpha = 1; ctx.fillStyle = flag; ctx.fillRect(x * cw + 2, y * ch + 2, cw - 4, ch - 4); }
+    }
+    ctx.globalAlpha = 1;
+
+    // trail
+    ctx.strokeStyle = acc; ctx.globalAlpha = 0.25; ctx.lineWidth = 2; ctx.beginPath();
+    S.trail.forEach(function (t, k) { var p = ctr(t); k ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]); }); ctx.stroke();
+    // planned route
+    ctx.globalAlpha = 1; ctx.setLineDash([5, 4]); ctx.lineWidth = 2; ctx.beginPath();
+    S.path.slice(S.step).forEach(function (t, k) { var p = ctr(t); k ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]); }); ctx.stroke();
+    ctx.setLineDash([]);
+
+    // goal
+    var g = ctr(S.goal); ctx.strokeStyle = acc; ctx.lineWidth = 1.5; ctx.strokeRect(g[0] - cw * 0.45, g[1] - ch * 0.45, cw * 0.9, ch * 0.9);
+    ctx.fillStyle = muted; ctx.font = '10px "Geist Mono", ui-monospace, monospace'; ctx.textAlign = 'right'; ctx.fillText('goal', g[0] - cw * 0.7, g[1] + 3);
+
+    // sensor range and vehicle
+    var v = ctr(S.pos);
+    ctx.setLineDash([3, 4]); ctx.strokeStyle = S.flash ? flag : muted; ctx.globalAlpha = S.flash ? 0.9 : 0.6; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.ellipse(v[0], v[1], R * cw, R * ch, 0, 0, Math.PI * 2); ctx.stroke(); ctx.setLineDash([]); ctx.globalAlpha = 1;
+    ctx.fillStyle = acc; ctx.beginPath(); ctx.arc(v[0], v[1], Math.min(cw, ch) * 0.38, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = surf; ctx.beginPath(); ctx.arc(v[0], v[1], Math.min(cw, ch) * 0.14, 0, Math.PI * 2); ctx.fill();
+  }
+
+  function init() {
+    S = setup(7);
+    if (!S) return;
+    if (reduce) {
+      var target = Math.floor(S.path.length * 0.55);
+      for (var k = 0; k < 400 && S.trail.length < target && S.pos !== S.goal; k++) tick();
+      S.flash = 0; setStatus(false); draw(); return;
+    }
+    // Start part-way so the first frame already shows a re-plan story
+    for (var k2 = 0; k2 < 6; k2++) tick();
+    draw();
+  }
+
+  var last = 0;
+  function loop(now) {
+    if (now - last > 140) { last = now; tick(); draw(); }
+    requestAnimationFrame(loop);
+  }
+
+  init();
+  if (!reduce) requestAnimationFrame(loop);
+  var rt; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { init(); }, 200); });
+  if (window.matchMedia) { var mq = window.matchMedia('(prefers-color-scheme: dark)'); if (mq.addEventListener) mq.addEventListener('change', draw); }
+  new MutationObserver(draw).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+})();
+</script>
+</body>
+</html>
